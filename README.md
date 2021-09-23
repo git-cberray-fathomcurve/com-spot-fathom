@@ -27,3 +27,31 @@ gps rewrite in node
 <h3>Phase 3</h3>
 -acquire api key for google maps<br>
 -build html, css, js for google map display<br>
+
+<hr>
+
+<h3>Phase 4</h3>
+-update user, users with added fields<br>
+-evaluate, and potentially incorporate login fields<br>
+-build class for heading and direction between two points<br>
+-build routers for GET requests<br>
+-  list of friends<br>
+-  list of locations<br>
+
+<h3>Phase 5</h3>
+-build login html, css<br>
+-build user html, css<br>
+-build my locations html, css<br>
+
+<h3>Phase 6</h3>
+-connect html to app.js<br>
+-connect location GET to map<br>
+-embed map in location html<br>
+
+<h3>Phase 7</h3>
+-add further event listeners<br>
+-  login to user info<br>
+-  login to new user setup<br>
+-  user to all locations and back<br>
+-  login to all locations<br>
+-  all locations to single location<br>
