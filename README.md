@@ -24,3 +24,6 @@ gps rewrite in node
 -Add database join (a location joins to user)<br>
 -Revalidate CRUD<br>
 
+<h3>Phase 3</h3>
+-acquire api key for google maps<br>
+-build html, css, js for google map display<br>
