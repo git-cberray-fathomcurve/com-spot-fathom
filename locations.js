@@ -2,6 +2,7 @@ const express = require('express');
 const router = express();
 const mongoose = require('mongoose');
 const Location = require('../models/location.js');
+const User = require('../models/user.js');
 
 router.get('/',(req, res, next)=>{
     Location.find()
@@ -13,9 +14,11 @@ router.get('/',(req, res, next)=>{
             locations: docs.map(doc=>{
                 return{
                     name: doc.name,
-                    owner: doc.owner,
-                    startdate: doc.startdate,
+                    user: doc.user,
+                    spot: doc.spot,
+                    friend: doc.friend,
                     _id:doc._id,
+                    note: doc.note,
                     request: {
                         type: 'GET',
                         url: 'http://localhost:3000/locations/'+ doc._id
@@ -23,13 +26,9 @@ router.get('/',(req, res, next)=>{
                 }
             })
         };
-        //if (docs.length>0){
-            res.status(200).json(response);
-        // } else {
-        //     res.status(404).json({
-        //         message:'no entries found'
-        //     });
-        // }
+
+        res.status(200).json(response);
+
     })
     .catch(err=>{
         console.log(err);
@@ -40,12 +39,61 @@ router.get('/',(req, res, next)=>{
 });
 
 router.post('/',(req, res, next)=>{
+    // Check if there is a valid user id before entry
+    User.findById(req.body.userId)//uses static User
+    .then(user=>{
+        // when no user is found we send an error and end process with return statement
+        if(!user){
+            return res.status(404).json({
+                message: 'User not found'
+            });
+        } else {
+            const location = new Location({
+                _id: mongoose.Types.ObjectId(),
+                name: req.body.name,
+                user: req.body.userId,
+                spot: req.body.spot,
+                friend: req.body.friend,
+                note: req.body.note
+            });
+            return location.save()//returns the promise
+        }
+    })
+    // Now create location joined to user
+    .then(result=>{
+        console.log(result);
+        res.status(201).json({
+            message: 'Created new location successfully',
+            createdLocation: {
+                name: result.name,
+                friend: result.friend,
+                spot: result.spot,
+                _id: result._id,
+                user: user._id,
+                note: result.note,
+                request: {
+                    type: 'GET',
+                    url: 'http://localhost:3000/locations/' + result._id
+                }
+            }
+        });
+    })
+    .catch(err=>{
+        console.log(err);
+        res.status(500).json({
+            error:err
+        });
+    });
+
+
     // Instantiate Location from schema in models folder
     const location = new Location({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
-        owner: req.body.owner,
-        startdate: req.body.startdate
+        spot: req.body.spot,
+        friend: req.body.friend,
+        user: req.body.userId,
+        note: req.body.note
     });
     location.save().then(result=>{
         console.log(result);
@@ -53,9 +101,11 @@ router.post('/',(req, res, next)=>{
             message: 'Created new location successfully',
             createdLocation: {
                 name: result.name,
-                owner: result.owner,
-                startdate: result.startdate,
+                friend: result.friend,
+                spot: result.spot,
                 _id: result._id,
+                user: User._id,
+                note: result.note,
                 request: {
                     type: 'GET',
                     url: 'http://localhost:3000/locations/' + result._id
