@@ -8,6 +8,10 @@ gps rewrite in node
 -Mapping of a location<br>
 -Weather for a location<br>
 
+<H3>Requirement Changes:</h3>
+-ADDED 9/24/2021 by Charles Berray<br>
+-ability to add/see/change/delete photo of location<br>
+
 <h2>Application Build:</h2>
 
 <h3>Phase 1</h3>
@@ -21,7 +25,7 @@ gps rewrite in node
 -Add crud validation<br>
 
 <h3>Phase 2</h3>
--Add database join (a location joins to user)<br>
+-Add database join (a location joins to userid)<br>
 -Revalidate CRUD<br>
 
 <h3>Phase 3</h3>
@@ -34,6 +38,7 @@ gps rewrite in node
 -update user, users with added fields<br>
 -evaluate, and potentially incorporate login fields<br>
 -build class for heading and direction between two points<br>
+-ADDED - create schema and crud for photo with join to locationid
 <hr>
 PROGRESS TO HERE THUS FAR<br>
 <hr>
