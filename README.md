@@ -38,7 +38,6 @@ gps rewrite in node
 -update user, users with added fields<br>
 -evaluate, and potentially incorporate login fields<br>
 -build class for heading and direction between two points<br>
--ADDED - create schema and crud for photo with join to locationid
 <hr>
 PROGRESS TO HERE THUS FAR<br>
 <hr>
@@ -50,6 +49,8 @@ PROGRESS TO HERE THUS FAR<br>
 -build login html, css<br>
 -build user html, css<br>
 -build my locations html, css<br>
+-ADDED REQT - create schema and crud for photo with join to locationid<br>
+-ADDED REQT - show photo in location html<br>
 
 <h3>Phase 6</h3>
 -connect html to app.js<br>
