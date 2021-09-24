@@ -8,7 +8,7 @@ gps rewrite in node
 -Mapping of a location<br>
 -Weather for a location<br>
 
-<b><font color='#FF0000'>Requirement Changes:</font></b>
+<b><font color='#FF0000'>Requirement Changes:</font></b><br>
 -ADDED 9/24/2021 by Charles Berray<br>
 -ability to add/see/change/delete photo of location<br>
 
