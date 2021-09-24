@@ -5,7 +5,7 @@ const User = require('../models/user.js');
 
 router.get('/',(req, res, next)=>{
     User.find()
-    .select('_id name owner startdate')
+    .select('_id name password startdate')
     .exec()
     .then(docs=>{
         const response = {
@@ -13,7 +13,9 @@ router.get('/',(req, res, next)=>{
             users: docs.map(doc=>{
                 return{
                     name: doc.name,
-                    owner: doc.owner,
+                    password: doc.password,
+                    lastlogin: doc.lastlogin,
+                    friend: doc.friend,
                     startdate: doc.startdate,
                     _id:doc._id,
                     request: {
@@ -23,13 +25,7 @@ router.get('/',(req, res, next)=>{
                 }
             })
         };
-        //if (docs.length>0){
-            res.status(200).json(response);
-        // } else {
-        //     res.status(404).json({
-        //         message:'no entries found'
-        //     });
-        // }
+        res.status(200).json(response);
     })
     .catch(err=>{
         console.log(err);
@@ -44,7 +40,9 @@ router.post('/',(req, res, next)=>{
     const user = new User({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
-        owner: req.body.owner,
+        password: req.body.password,
+        lastlogin: req.body.lastlogin,
+        friend: req.body.friend,
         startdate: req.body.startdate
     });
     user.save().then(result=>{
@@ -53,7 +51,9 @@ router.post('/',(req, res, next)=>{
             message: 'Created new user successfully',
             createdUser: {
                 name: result.name,
-                owner: result.owner,
+                password: result.password,
+                lastlogin: result.lastlogin,
+                friend: result.friend,
                 startdate: result.startdate,
                 _id: result._id,
                 request: {

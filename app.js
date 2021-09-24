@@ -3,7 +3,21 @@ const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const distance = require('./api/models/distance.js');
+const heading = require('./api/models/heading.js');
 
+// Test heading and distance calcs
+//const bb = heading.heading(39.099912, -94.581213,38.627089, -90.200203).toFixed(2);
+const aa = distance.distance(44.0550257,-89.1209745, 44.018177,-88.6353206).toFixed(2);
+const bb = heading.heading(44.0550257,-89.1209745, 44.018177,-88.6353206).toFixed(2);
+
+const cc = distance.distance(44.0550257,-89.1209745, 43.0851588,-89.546503)
+const dd = heading.heading(44.0550257,-89.1209745, 43.0851588,-89.546503)
+// madi: 43.0851588,-89.546503
+// redgr: @44.0550257,-89.1209745
+// oshk: @44.018177,-88.6353206
+console.log('from redg to oshk is: ' + aa +' miles on heading: ' + bb + ' degrees true');
+console.log('from redg to madi is: ' + cc +' miles on heading: ' + dd + ' degrees true');
 // ROUTE DECLARATIONS
 const locationRoutes=require('./api/routes/locations');
 const userRoutes=require('./api/routes/users');
