@@ -38,12 +38,13 @@ gps rewrite in node
 -update user, users with added fields<br>
 -evaluate, and potentially incorporate login fields<br>
 -build class for heading and direction between two points<br>
-<hr>
-PROGRESS TO HERE THUS FAR<br>
-<hr>
 -build routers for GET requests<br>
 -  list of friends<br>
 -  list of locations<br>
+
+<hr>
+PROGRESS TO HERE THUS FAR<br>
+<hr>
 
 <h3>Phase 5</h3>
 -build login html, css<br>
