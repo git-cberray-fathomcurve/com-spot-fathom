@@ -89,8 +89,30 @@ router.get('/:userId',(req, res, next)=>{
         });
 });
 
+//   Method to return list of friends of a specified user
+router.get('/friend/:userId',(req, res, next)=>{
+    const id=req.params.userId;
+    User.findById(id)
+        .exec()
+        .then(docs=>{
+            const response = {
+                count: docs.length,
+                friend: docs.friend
+            }
+            res.status(200).json(response);
+        })
+        .catch(err=> {
+            console.log(err);
+            res.status(500).json({error:err});
+        });
+});
+
 router.patch('/:userId',(req, res, next)=>{
     const id=req.params.userId;
+    // Append field content for array will happen by getting full contents for user, and user will replace content selectively,
+    //  thus, only replace is required here
+
+    // Replace field content
     const updateOps = {};
     for (const ops of req.body){
         updateOps[ops.propName]=ops.value;
