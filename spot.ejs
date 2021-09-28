@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single location page</title>
+    <link rel="stylesheet" type="text/css" href="./map.css" />
+    <script src="./map.js"></script>
+</head>
+<body>
+    <h3>Map of single location here</h3>
+    <!--The div element for the map -->
+    <div id="map"></div>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApZ8Hcgz9o0LmpQNqulo7Yu9Wbp-7bANY&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>
+</body>
+</html>
