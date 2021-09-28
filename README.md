@@ -42,14 +42,15 @@ gps rewrite in node
 -  list of friends<br>
 -  list of locations<br>
 
+<h3>Phase 5</h3>
+-build login html, css<br>
+-build user html, css<br>
+-build my spot html, css<br>
+
 <hr>
 PROGRESS TO HERE THUS FAR<br>
 <hr>
 
-<h3>Phase 5</h3>
--build login html, css<br>
--build user html, css<br>
--build my locations html, css<br>
 -ADDED REQT - create schema and crud for photo with join to locationid<br>
 -ADDED REQT - show photo in location html<br>
 
