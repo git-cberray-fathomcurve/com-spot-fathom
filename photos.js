@@ -1,30 +1,26 @@
 const express = require('express');
 const router = express();
 const mongoose = require('mongoose');
+const Photo = require('../models/photo.js');
+const location = require('../models/location.js');
 const Location = require('../models/location.js');
-const user = require('../models/user.js');
-const User = require('../models/user.js');
-
 
 
 router.get('/',(req, res, next)=>{
-    Location.find()
-    .select('_id name owner startdate')
+    Photo.find()
+    .select('_id name location Image')
     .exec()
     .then(docs=>{
         const response = {
             count: docs.length,
-            locations: docs.map(doc=>{
+            photos: docs.map(doc=>{
                 return{
                     name: doc.name,
-                    user: doc.user,
-                    spot: doc.spot,
-                    friend: doc.friend,
+                    location: doc.location,
                     _id:doc._id,
-                    note: doc.note,
                     request: {
                         type: 'GET',
-                        url: 'http://localhost:3000/locations/'+ doc._id
+                        url: 'http://localhost:3000/photos/'+ doc._id
                     }
                 }
             })
@@ -42,43 +38,42 @@ router.get('/',(req, res, next)=>{
 });
 
 router.post('/',(req, res, next)=>{
-    // Check if there is a valid user id before entry
+    // Check if there is a valid location id before entry
     
-    User.findById(req.body.userId)//uses static User
-    .then(user=>{
-        // when no user is found we send an error and end process with return statement
-        if(!user){
-            //run event to build new user creation here
+    Location.findById(req.body.locationId)//uses static Location
+    .then(location=>{
+        // when no location is found we send an error and end process with return statement
+        if(!location){
+            //run event to build new location creation here
             return res.status(404).json({
-                message: 'User not found'
+                message: 'Location not found'
             });
-        } else {//we found a valid user, create location object
-            const location = new Location({
+        } else {//we found a valid location, create photo object
+            const photo = new Photo({
                 _id: mongoose.Types.ObjectId(),
                 name: req.body.name,
-                user: req.body.userId,
-                spot: req.body.spot,
-                friend: req.body.friend,
-                note: req.body.note
+                location: req.body.locationId
             });
-            return location.save()//returns the promise
+            return photo.save()//returns the promise
         }
     })
-    // Now create location joined to user
+    // Now create photo joined to location
     .then(result=>{
         console.log(result);
         res.status(201).json({
-            message: 'Created new location successfully',
-            createdLocation: {
+            message: 'Created new photo successfully',
+            createdPhoto: {
                 name: result.name,
-                friend: result.friend,
-                spot: result.spot,
                 _id: result._id,
-                user: result.user,
-                note: result.note,
+                location: result.location,
+
+///    HERE WE NEED TO USE CALL OF ASYNC CONVERTIGAGE     /////
+
+
+
                 request: {
                     type: 'GET',
-                    url: 'http://localhost:3000/locations/' + result._id
+                    url: 'http://localhost:3000/photos/' + result._id
                 }
             }
         });
@@ -91,16 +86,16 @@ router.post('/',(req, res, next)=>{
     });
 });
 
-router.get('/:locationId',(req, res, next)=>{
-    const id=req.params.locationId;
-    Location.findById(id)
+router.get('/:photoId',(req, res, next)=>{
+    const id=req.params.photoId;
+    Photo.findById(id)
         .exec()
         .then(doc=>{
             console.log('from database', doc);
             if (doc) {
                 res.status(200).json(doc);
             } else {
-                res.status(404).json({ message:'Location ID not found' });
+                res.status(404).json({ message:'Photo ID not found' });
             }
         })
         .catch(err=> {
@@ -109,30 +104,13 @@ router.get('/:locationId',(req, res, next)=>{
         });
 });
 
-//   Method to return list of locations of a specified user
-router.get('/myloc/:user',(req, res, next)=>{
-    const id=req.params.user;
-    Location.find({'user':id})
-        .exec()
-        .then(docs=>{
-            if (docs) {
-                const response = docs;
-                res.status(200).json(response);
-            } 
-        })
-        .catch(err=> {
-            res.status(404).json({ message:'Location ID not found' });
-        });
-});
-
-
-router.patch('/:locationId',(req, res, next)=>{
-    const id=req.params.locationId;
+router.patch('/:photoId',(req, res, next)=>{
+    const id=req.params.photoId;
     const updateOps = {};
     for (const ops of req.body){
         updateOps[ops.propName]=ops.value;
     }
-    Location.updateOne({_id:id},{$set: updateOps})
+    Photo.updateOne({_id:id},{$set: updateOps})
     .exec()
     .then(result=>{
         console.log(result);
@@ -146,9 +124,9 @@ router.patch('/:locationId',(req, res, next)=>{
     });
 });
 
-router.delete('/:locationId',(req, res, next)=>{
-    const id=req.params.locationId;
-    Location.remove({_id:id})
+router.delete('/:photoId',(req, res, next)=>{
+    const id=req.params.photoId;
+    Photo.remove({_id:id})
         .exec()
         .then(result=>{
             res.status(200).json(result);

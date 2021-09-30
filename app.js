@@ -6,30 +6,35 @@ const mongoose = require('mongoose');
 const distance = require('./api/models/distance.js');
 const heading = require('./api/models/heading.js');
 
-// Test heading and distance calcs
-//const bb = heading.heading(39.099912, -94.581213,38.627089, -90.200203).toFixed(2);
-const aa = distance.distance(44.0550257,-89.1209745, 44.018177,-88.6353206).toFixed(2);
-const bb = heading.heading(44.0550257,-89.1209745, 44.018177,-88.6353206).toFixed(2);
 
-const cc = distance.distance(44.0550257,-89.1209745, 43.0851588,-89.546503)
-const dd = heading.heading(44.0550257,-89.1209745, 43.0851588,-89.546503)
-// madi: 43.0851588,-89.546503
-// redgr: @44.0550257,-89.1209745
-// oshk: @44.018177,-88.6353206
-console.log('from redg to oshk is: ' + aa +' miles on heading: ' + bb + ' degrees true');
-console.log('from redg to madi is: ' + cc +' miles on heading: ' + dd + ' degrees true');
+// Adds functionality of mongo-image-converter
+app.use(bodyParser.json({limit: '16mb', extended: true}));     // Make sure you add these two lines
+app.use(bodyParser.urlencoded({limit: '16mb', extended: true}))    //Make sure you add these two lines
+
+// Set EJS as templating engine
+app.set("view engine", "ejs");
+
+
 // ROUTE DECLARATIONS
 const locationRoutes=require('./api/routes/locations');
 const userRoutes=require('./api/routes/users');
+const photoRoutes=require('./api/routes/photos');
 
 // DATABASE CONSTRUCT
 mongoose.connect('mongodb+srv://' + 
     process.env.MONGO_ATLAS_USER + ':' + 
     process.env.MONGO_ATLAS_PW + 
-    '@cluster0.u12zz.mongodb.net/SPOTS?retryWrites=true&w=majority');
+    '@cluster0.u12zz.mongodb.net/SPOTS?retryWrites=true&w=majority',
     {
-        useMongoClient: true
-    }
+        //useMongoClient: true,
+        useNewUrlParser:true,
+        useUnifiedTopology: true,
+        //useFindAndModify: false
+    }).then(()=>{
+        console.log('connected-to-DB');
+        }).catch(err=>{
+        console.log(err.message);
+        });
 
 // MIDDLEWARE
 // --LOGGING
@@ -54,6 +59,7 @@ app.use((req,res,next)=>{
 // --ROUTES
 app.use('/locations', locationRoutes);
 app.use('/users', userRoutes);
+app.use('/photos', photoRoutes);
 
 // --ERROR HANDLING
 app.use((res, req, next)=>{
@@ -70,5 +76,19 @@ app.use((error, req, res, next)=>{
         }
     });
 });
+
+// Test heading and distance calcs
+//const bb = heading.heading(39.099912, -94.581213,38.627089, -90.200203).toFixed(2);
+const aa = distance.distance(44.0550257,-89.1209745, 44.018177,-88.6353206).toFixed(2);
+const bb = heading.heading(44.0550257,-89.1209745, 44.018177,-88.6353206).toFixed(2);
+
+const cc = distance.distance(44.0550257,-89.1209745, 43.0851588,-89.546503)
+const dd = heading.heading(44.0550257,-89.1209745, 43.0851588,-89.546503)
+// madi: 43.0851588,-89.546503
+// redgr: @44.0550257,-89.1209745
+// oshk: @44.018177,-88.6353206
+// console.log('from redg to oshk is: ' + aa +' miles on heading: ' + bb + ' degrees true');
+// console.log('from redg to madi is: ' + cc +' miles on heading: ' + dd + ' degrees true');
+
 
 module.exports = app;
